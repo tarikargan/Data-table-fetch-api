@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fetch api & Datatable</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
+
+    <style>
+        section{
+            position: relative;
+            width: 100%;
+            padding: 0px 8% 20px;
+        }
+        header h1{
+            color: #8e44ad;
+            font-size: 2em;
+            margin:30px 0px
+        }
+
+    </style>
+</head>
+<body>
+    
+    <section>
+        <header>
+            <h1>Data table</h1>
+        </header>
+
+        <!-- table area -->
+        <table id="example" class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            
+        </table>
+    </section>
+
+
+    <!-- js library -->
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
+
+    <script>
+        
+
+
+        fetch('https://fakestoreapi.com/products')
+            .then(res=>res.json())
+            .then(data=>{
+                console.log('data',data);
+
+                displayProducts(data);
+            })
+
+        async function displayProducts(products) {
+            let html = '';
+            await products.forEach((product, index, array) => {
+                html += '<tr>';
+                html += `<td>
+                            <img src="${product.image}" style="width:50px;height:50px;border-radius:50%" alt="">
+                         </td>
+                        <td>${product.title}</td>
+                        <td>${product.category}</td>
+                        <td>${product.price}$</td>`;
+                html += '</tr>';
+            })
+            document.querySelector('tbody').innerHTML = await html;
+            // 
+            $(document).ready(function () {
+                $('#example').DataTable();
+            });
+        }
+    </script>
+</body>
+</html>
